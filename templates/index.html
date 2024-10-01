@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title> Daily Gratitude Exercise</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style='text-align: center'>Daily Gratitudes</h1>
+    {% if entries|length < 1 %} <h4 style="text-align: center">still empty...</h4>
+        {% else %}
+        <table>
+            <tr>
+                <th> Entries</th>
+                <th> Date Added</th>
+                <th> Actions</th>
+            </tr>
+
+            {% for entry in entries %}
+            <tr>
+                <td> {{ entry.content }}</td>
+                <td> {{ entry.date_created.date()}}</td>
+                <td>
+                    <a href="/delete/{{entry.id}}"> Delete</a>
+                    <a href="/update/{{entry.id}}"> Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        <!-- Collecting entries to be entered into database -->
+        <div class="form">
+            <form action="/add" method='POST'>
+                <input type="text" name="content" placeholder="What are you grateful for rn?" required>
+                <input type="submit" value="Add">
+            </form>
+        </div>
+
+        <!-- Total number of entries -->
+        <h2> Total Entries: {{ total_entries }}</h2>
+
+        <!-- Search Feature 
+        <form action="/search" method="POST">
+            <input type="text" name="query" placeholder="Search your past entries...">
+            <input type="submit" value="Search">
+        </form>-->
+
+        <!-- Export to CSV Feature -->
+        <a href="/export"> Give me my gratefulness!!!</a>
+
+
+</div>
+{% endblock %}
